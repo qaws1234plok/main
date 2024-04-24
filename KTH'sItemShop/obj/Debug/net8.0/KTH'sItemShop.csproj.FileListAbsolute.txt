@@ -1,0 +1,14 @@
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\KTH'sItemShop.exe
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\KTH'sItemShop.deps.json
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\KTH'sItemShop.runtimeconfig.json
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\KTH'sItemShop.dll
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\KTH'sItemShop.pdb
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.AssemblyInfoInputs.cache
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.AssemblyInfo.cs
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.csproj.CoreCompileInputs.cache
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.dll
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\refint\KTH'sItemShop.dll
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.pdb
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.genruntimeconfig.cache
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\ref\KTH'sItemShop.dll
