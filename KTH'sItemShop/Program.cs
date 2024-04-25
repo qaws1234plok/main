@@ -24,7 +24,7 @@ namespace TextKTHitemShop
             // 초기 스텟 설정
             hero.Level = 1;
             hero.Health = 100;
-            hero.MoneyGold = 100000;
+            hero.MoneyGold = 1500;
 
             ShopRtanGame game = new ShopRtanGame(hero);
             game.StartGame();
@@ -60,7 +60,7 @@ namespace TextKTHitemShop
             TheItemShop = new TheItemShop(this);
             Dungeon = new Dungeon(player);
             RestPoint = new RestPoint(player);
-            ManagementGameData = new ManagementGameData(player);
+            ManagementGameData = new ManagementGameData(player, Inventory);
         }
 
 
@@ -986,10 +986,13 @@ namespace TextKTHitemShop
     public class ManagementGameData
     {
         private Player _player;
+        private Inventory _inventory; 
 
-        public ManagementGameData(Player player) 
+
+        public ManagementGameData(Player player, Inventory inventory) 
         {
             _player = player;
+            _inventory = inventory; 
         }
 
         public void ManageGameData()
@@ -1013,10 +1016,11 @@ namespace TextKTHitemShop
                     };
                     CurrentPlayerData.SaveCurrentPlayerData(saveData);
 
-                    InventoryData inventoryData = CurrentInventoryData();
+                    InventoryData inventoryData = _inventory.CurrentInventoryData();
 
                     Console.WriteLine("데이터가 저장되었습니다.");
                     break;
+
                 case "2":
                     try
                     {
