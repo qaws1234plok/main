@@ -35,7 +35,7 @@ namespace TextKTHitemShop
         {
             if (!File.Exists(fileName)) 
             {
-                throw new FileNotFoundException($"The file {fileName} was not found.");
+                throw new FileNotFoundException($"세이브 파일 {fileName}이 없습니다.");
             }
 
             string jsonString = File.ReadAllText(fileName); 
@@ -47,18 +47,18 @@ namespace TextKTHitemShop
     {
         public List<ItemData> Items { get; set; } = new List<ItemData>();
 
-        public static void SaveInventoryData(InventoryData data, string fileName = "InventoryData.json")
+        public static void SaveInventoryData(InventoryData data, string fileName = "SaveData.json")
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(data, options);
             File.WriteAllText(fileName, jsonString);
         }
 
-        public static InventoryData LoadInventoryData(string fileName = "InventoryData.json")
+        public static InventoryData LoadInventoryData(string fileName = "SaveData.json")
         {
             if (!File.Exists(fileName))
             {
-                throw new FileNotFoundException($"The file {fileName} was not found.");
+                throw new FileNotFoundException($"세이브 파일 {fileName} 이 없습니다.");
             }
 
             string jsonString = File.ReadAllText(fileName);
