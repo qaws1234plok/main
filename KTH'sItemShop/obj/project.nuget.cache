@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gMzCGQnGPXGMcp5rL88dXuL5QnaFrH0KWXW4AepbgVofScDy9RLKVlr/+xVYvyLhX1FFQ0pYaioDuee8Jd0iRQ==",
+  "dgSpecHash": "WC9QnB7LQnJxtmk+6d9P1NPsjPg1rlCx/4F1CqCGpVPeyHdltr6wJemWjVbsyjvNsg8t/S7rl5sNAin8qXJkWA==",
   "success": true,
   "projectFilePath": "C:\\Users\\xogud\\source\\repos\\KTH'sItemShop\\KTH'sItemShop\\KTH'sItemShop.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\xogud\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

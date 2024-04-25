@@ -13,3 +13,6 @@ C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sIt
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.genruntimeconfig.cache
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\ref\KTH'sItemShop.dll
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.sourcelink.json
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.csproj.AssemblyReference.cache
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sIte.F775DF73.Up2Date

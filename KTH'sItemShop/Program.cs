@@ -4,6 +4,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using System.Linq;
 using System.Numerics;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace TextKTHitemShop
 {
@@ -31,12 +34,17 @@ namespace TextKTHitemShop
     public class ShopRtanGame
     {
         public Player Player { get; private set; }
+        public CurrentPlayerData PlayerData { get; private set; }
+
         public Inventory Inventory { get; private set; }
         public TheItemShop TheItemShop { get; private set; }
 
         public Dungeon Dungeon { get; private set; }
 
         public RestPoint RestPoint { get; private set; }
+
+        public ManagementGameData ManagementGameData { get; private set; }
+
 
         public ShopRtanGame(Player player)  // 생성자를 통해 Player 객체를 초기화
         {
@@ -52,6 +60,7 @@ namespace TextKTHitemShop
             TheItemShop = new TheItemShop(this);
             Dungeon = new Dungeon(player);
             RestPoint = new RestPoint(player);
+            ManagementGameData = new ManagementGameData(player);
         }
 
 
@@ -61,6 +70,8 @@ namespace TextKTHitemShop
             Inventory.OnReturnToMainMenu += menu.MainShow; // 이벤트 구독
             menu.MainShow();
         }
+
+      
     }
 
     public class MainMenu
@@ -90,6 +101,7 @@ namespace TextKTHitemShop
                 Console.WriteLine("3. 상점");
                 Console.WriteLine("4. 던전탐험");
                 Console.WriteLine("5. 휴식");
+                Console.WriteLine("9. 게임 데이터 관리");
                 Console.WriteLine(); //빈줄
 
                 // 입력창
@@ -111,13 +123,17 @@ namespace TextKTHitemShop
                     case "3":
                         _game.TheItemShop.ShowItemShop();
                         break;
-                    
+
                     case "4":
                         _game.Dungeon.ShowMeDuengon();
                         break;
 
                     case "5":
                         _game.RestPoint.RestShowMenu();
+                        break;
+
+                    case "9":
+                        _game.ManagementGameData.ManageGameData();
                         break;
 
                     default:
@@ -136,8 +152,8 @@ namespace TextKTHitemShop
         public string Name { get; set; }
         public int Level { get; set; }
         public int Health { get; set; }
-        private float baseAttackPower;
-        private float baseDefencePower;
+        public float baseAttackPower;
+        public float baseDefencePower;
         public float AttackPowerBonus { get; private set; }
         public float DefencePowerBonus { get; private set; }
         public int MoneyGold { get; set; }
@@ -231,7 +247,7 @@ namespace TextKTHitemShop
             Console.Clear();
 
         }
-        
+
         public void ApplyDamage(int damage)
         {
             Health -= damage;
@@ -245,7 +261,7 @@ namespace TextKTHitemShop
                 Environment.Exit(0);
             }
         }
-        
+
         public void ApplyRecovery(int carePoint)
         {
             Health += carePoint;
@@ -332,6 +348,48 @@ namespace TextKTHitemShop
                 }
             } while (choice != "0");
         }
+
+        public InventoryData CurrentInventoryData()
+        {
+            var inventoryData = new InventoryData();
+            foreach (var item in _items)
+            {
+                inventoryData.Items.Add(new ItemData
+                {
+                    Name = item.Name,
+                    IsEquipped = item.IsEquipped,
+                    AttackBonus = item.AttackBonus,
+                    DefenseBonus = item.DefenseBonus,
+                    Description = item.Description,
+                    Price = item.Price,  
+                    Type = item.Type     
+                });
+            }
+            return inventoryData;
+        }
+
+        public void LoadInventory(InventoryData data)
+        {
+            _items.Clear();
+            foreach (var itemData in data.Items)
+            {
+                var item = new Item(
+                    itemData.Name,
+                    itemData.AttackBonus,
+                    itemData.DefenseBonus,
+                    itemData.Description,
+                    itemData.Price,  
+                    itemData.Type    
+                );
+                item.IsEquipped = itemData.IsEquipped;  
+                _items.Add(item);
+                if (item.IsEquipped)
+                {
+                    _equipmentManager.EquipedItem();  
+                }
+            }
+        }
+
     }
     public enum ItemSeries
     {
@@ -551,7 +609,7 @@ namespace TextKTHitemShop
 
         public void SellingItem()
         {
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("상점 - 아이템 판매");
@@ -848,7 +906,7 @@ namespace TextKTHitemShop
             float MinDam = 20 + DefencePlusMinus;
             float MaxDam = 35 + DefencePlusMinus;
 
-            int minDamage =(int)Math.Round(MinDam);
+            int minDamage = (int)Math.Round(MinDam);
             int maxDamage = (int)Math.Round(MaxDam);
 
             int damage = random.Next(minDamage, maxDamage + 1);
@@ -858,7 +916,7 @@ namespace TextKTHitemShop
         private void ClearGold(int baseReward)
         {
             Random random = new Random();
-            float attackPower = _player.AttackPower *2;
+            float attackPower = _player.AttackPower * 2;
             int minBonusAttackPorwer = (int)attackPower / 2;
 
             float bonusAttackPercent = random.Next(minBonusAttackPorwer, (int)attackPower);
@@ -879,7 +937,7 @@ namespace TextKTHitemShop
 
         public void RestShowMenu()
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("휴식하기");
                 Console.WriteLine("500G를 내면 체력을 회복하실 수 있습니다.");
@@ -898,6 +956,8 @@ namespace TextKTHitemShop
                     case "1":
                         SpendMoneyGold();
                         HealthCare();
+                        Thread.Sleep(1000);
+                        Console.Clear();
                         break;
 
                     case "0":
@@ -910,7 +970,7 @@ namespace TextKTHitemShop
             }
         }
 
-        public void SpendMoneyGold ()
+        public void SpendMoneyGold()
         {
             _player.MoneyGold -= 500;
             Console.WriteLine($"휴식을 위해 500G를 소모하셨습니다. 현재 보유 골드 {_player.MoneyGold}G");
@@ -923,9 +983,58 @@ namespace TextKTHitemShop
         }
     }
 
-    public class PlayerLevelUp()
+    public class ManagementGameData
     {
+        private Player _player;
 
+        public ManagementGameData(Player player) 
+        {
+            _player = player;
+        }
+
+        public void ManageGameData()
+        {
+            Console.WriteLine("1. 데이터 저장하기");
+            Console.WriteLine("2. 데이터 불러오기");
+
+            Console.Write(">> ");
+            string option = Console.ReadLine();
+            switch (option)
+            {
+                case "1":
+                    CurrentPlayerData saveData = new CurrentPlayerData
+                    {
+                        Name = _player.Name,
+                        Level = _player.Level,
+                        Health = _player.Health,
+                        BaseAttackPower = _player.baseAttackPower,
+                        BaseDefencePower = _player.baseDefencePower,
+                        moneyGold = _player.MoneyGold
+                    };
+                    CurrentPlayerData.SaveCurrentPlayerData(saveData);
+
+                    InventoryData inventoryData = CurrentInventoryData();
+
+                    Console.WriteLine("데이터가 저장되었습니다.");
+                    break;
+                case "2":
+                    try
+                    {
+                        CurrentPlayerData loadData = CurrentPlayerData.LoadCurrentPlayerData();
+                        _player.Name = loadData.Name;
+                        _player.Level = loadData.Level;
+                        _player.Health = loadData.Health;
+                        _player.baseAttackPower = loadData.BaseAttackPower;
+                        _player.baseDefencePower = loadData.BaseDefencePower;
+                        _player.MoneyGold = loadData.moneyGold;
+                        Console.WriteLine("데이터가 로드되었습니다.");
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    break;
+            }
+        }
     }
-
 }
