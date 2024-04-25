@@ -12,3 +12,4 @@ C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\refint\
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.pdb
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.genruntimeconfig.cache
 C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\ref\KTH'sItemShop.dll
+C:\Users\xogud\source\repos\KTH'sItemShop\KTH'sItemShop\obj\Debug\net8.0\KTH'sItemShop.sourcelink.json

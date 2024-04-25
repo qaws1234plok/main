@@ -34,6 +34,10 @@ namespace TextKTHitemShop
         public Inventory Inventory { get; private set; }
         public TheItemShop TheItemShop { get; private set; }
 
+        public Dungeon Dungeon { get; private set; }
+
+        public RestPoint RestPoint { get; private set; }
+
         public ShopRtanGame(Player player)  // 생성자를 통해 Player 객체를 초기화
         {
             Player = player;
@@ -46,6 +50,8 @@ namespace TextKTHitemShop
             equipmentManager.Initialize(Inventory);  // EquipmentManager에 Inventory를 제공
 
             TheItemShop = new TheItemShop(this);
+            Dungeon = new Dungeon(player);
+            RestPoint = new RestPoint(player);
         }
 
 
@@ -82,6 +88,8 @@ namespace TextKTHitemShop
                 Console.WriteLine("1. 상태 보기");
                 Console.WriteLine("2. 인벤토리");
                 Console.WriteLine("3. 상점");
+                Console.WriteLine("4. 던전탐험");
+                Console.WriteLine("5. 휴식");
                 Console.WriteLine(); //빈줄
 
                 // 입력창
@@ -103,6 +111,15 @@ namespace TextKTHitemShop
                     case "3":
                         _game.TheItemShop.ShowItemShop();
                         break;
+                    
+                    case "4":
+                        _game.Dungeon.ShowMeDuengon();
+                        break;
+
+                    case "5":
+                        _game.RestPoint.RestShowMenu();
+                        break;
+
                     default:
                         Console.WriteLine("\n잘못된 선택입니다. 올바른 번호를 입력해주세요.");
                         Console.WriteLine();
@@ -126,6 +143,8 @@ namespace TextKTHitemShop
         public int MoneyGold { get; set; }
         public string JobClass { get; set; } = "전사";
 
+        public int DungeonClearCount = 0;
+
 
         // 공격력과 방어력에 대한 프로퍼티
         public float AttackPower => baseAttackPower + AttackPowerBonus;
@@ -136,6 +155,31 @@ namespace TextKTHitemShop
             baseAttackPower = initialAttackPower;
             baseDefencePower = initialDefencePower;
         }
+
+        public void PlayerDungeonClerar()
+        {
+            DungeonClearCount++;
+            PlayerLevelUpCheck();
+        }
+
+        public void PlayerLevelUpCheck()
+        {
+            if (DungeonClearCount == Level)
+            {
+                PlayerLevelUp();
+            }
+        }
+
+        public void PlayerLevelUp()
+        {
+            Level += 1;
+            DungeonClearCount = 0;
+            baseAttackPower += 1.0f;
+            baseDefencePower += 0.5f;
+
+            Console.WriteLine($"{Name}이(가) {Level}만큼 강해졌다! 공격력이 1 방어력이 0.5 상승했다!");
+        }
+
         // 아이템 장착
         public void EquipedItem(Item item)
         {
@@ -187,7 +231,25 @@ namespace TextKTHitemShop
             Console.Clear();
 
         }
+        
+        public void ApplyDamage(int damage)
+        {
+            Health -= damage;
+            Console.WriteLine($"{Name}가(이) {damage}만큼의 피해를 받았다! 현재 체력 {Health}");
 
+            if (Health <= 0)
+            {
+                Console.WriteLine($"무리한 탐험을 하다 {Name}이(가) 사망하였습니다. 게임을 종료합니다.");
+                Console.WriteLine("게임을 종료하려면 아무키나 눌러주세요");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+        }
+        
+        public void ApplyRecovery(int carePoint)
+        {
+            Health += carePoint;
+        }
     }
 
     public class Inventory
@@ -661,15 +723,208 @@ namespace TextKTHitemShop
 
     public class Dungeon
     {
-        public Dungeon()
-        {
+        private Player _player;
 
+        private float a = 5.0f;
+        private float b = 11.0f;
+        private float c = 17.0f;
+
+
+        public Dungeon(Player player)
+        {
+            _player = player;
         }
 
         public void ShowMeDuengon()
         {
+            while (true)
+            {
+                Console.WriteLine("던전입장");
+                Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
+                Console.WriteLine();
+
+                Console.WriteLine("1. 쉬운 던전");
+                Console.WriteLine("2. 일반 던전");
+                Console.WriteLine("3. 어려운 던전");
+                Console.WriteLine("0. 나가기");
+
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        EasyDuengon(_player);
+                        break;
+
+                    case "2":
+                        NomalDungeon(_player);
+                        break;
+
+                    case "3":
+                        HardDungeon(_player);
+                        break;
+
+                    case "0":
+                        return;
+
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
+            }
 
         }
+
+        public void EasyDuengon(Player player) //클리어시 체력 감소
+        {
+            Random random = new Random();
+            if (_player.DefencePower >= a || random.Next(100) < 60)
+            {
+                Console.WriteLine("던전 클리어!");
+                ClearRandomDamage();
+                ClearGold(1000);
+                _player.PlayerDungeonClerar();
+                Thread.Sleep(1000);
+                Console.Clear();
+            }
+
+            else
+            {
+                Console.WriteLine("클리어 실패...");
+                Console.WriteLine("던전의 입구로 돌아갑니다.");
+
+            }
+        }
+
+        public void NomalDungeon(Player player)
+        {
+            Random random = new Random();
+            if (_player.DefencePower >= b || random.Next(100) < 60)
+            {
+                Console.WriteLine("던전 클리어!");
+                ClearRandomDamage();
+                ClearGold(1700);
+                _player.PlayerDungeonClerar();
+                Thread.Sleep(1000);
+                Console.Clear();
+            }
+
+            else
+            {
+                Console.WriteLine("클리어 실패...");
+                Console.WriteLine("던전의 입구로 돌아갑니다.");
+            }
+        }
+
+        public void HardDungeon(Player player)
+        {
+            Random random = new Random();
+            if (_player.DefencePower >= c || random.Next(100) < 60)
+            {
+                Console.WriteLine("던전 클리어!");
+                ClearRandomDamage();
+                ClearGold(2500);
+                _player.PlayerDungeonClerar();
+                Thread.Sleep(1000);
+                Console.Clear();
+            }
+
+            else
+            {
+                Console.WriteLine("클리어 실패...");
+                Console.WriteLine("던전의 입구로 돌아갑니다.");
+            }
+        }
+
+
+
+        private void ClearRandomDamage() // 데미지
+        {
+            Random random = new Random();
+            float DefencePlusMinus = _player.DefencePower - a;
+
+            float MinDam = 20 + DefencePlusMinus;
+            float MaxDam = 35 + DefencePlusMinus;
+
+            int minDamage =(int)Math.Round(MinDam);
+            int maxDamage = (int)Math.Round(MaxDam);
+
+            int damage = random.Next(minDamage, maxDamage + 1);
+            _player.ApplyDamage(damage);
+        }
+
+        private void ClearGold(int baseReward)
+        {
+            Random random = new Random();
+            float attackPower = _player.AttackPower *2;
+            int minBonusAttackPorwer = (int)attackPower / 2;
+
+            float bonusAttackPercent = random.Next(minBonusAttackPorwer, (int)attackPower);
+            float BonusMoneyGold = baseReward * (1 + bonusAttackPercent / 100);
+            _player.MoneyGold += (int)BonusMoneyGold;
+            Console.WriteLine($"클리어 보상으로 {(int)BonusMoneyGold}만큼의 골드를 얻으셨습니다. 현재 보유 골드 {_player.MoneyGold}");
+        }
+
+    }
+
+    public class RestPoint
+    {
+        private Player _player;
+        public RestPoint(Player player)
+        {
+            _player = player;
+        }
+
+        public void RestShowMenu()
+        {
+            while(true)
+            {
+                Console.WriteLine("휴식하기");
+                Console.WriteLine("500G를 내면 체력을 회복하실 수 있습니다.");
+                Console.WriteLine();
+
+                Console.WriteLine("1. 휴식하기");
+                Console.WriteLine("0. 나가기");
+                Console.WriteLine();
+
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        SpendMoneyGold();
+                        HealthCare();
+                        break;
+
+                    case "0":
+                        return;
+
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
+            }
+        }
+
+        public void SpendMoneyGold ()
+        {
+            _player.MoneyGold -= 500;
+            Console.WriteLine($"휴식을 위해 500G를 소모하셨습니다. 현재 보유 골드 {_player.MoneyGold}G");
+        }
+
+        public void HealthCare()
+        {
+            int carePoint = 100 - _player.Health;
+            _player.ApplyRecovery(carePoint);
+        }
+    }
+
+    public class PlayerLevelUp()
+    {
 
     }
 
