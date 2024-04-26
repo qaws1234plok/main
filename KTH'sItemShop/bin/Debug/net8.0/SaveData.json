@@ -1,8 +1,10 @@
 {
-  "Name": "asd",
+  "Name": "asdagag",
   "Level": 1,
   "Health": 100,
   "BaseAttackPower": 10,
   "BaseDefencePower": 5,
-  "moneyGold": 62900
+  "attackPowerBonus": 0,
+  "defencePowerBonus": 5,
+  "moneyGold": 500
 }
